@@ -7,8 +7,9 @@ module Cinch::Plugins
     class Status
       include Cinch::Plugin
 
-      self.help = "Show github status"
-      
+      set :help, <<-HELP
+Show github status
+HELP
       match /github status/
 
       def execute(m)
