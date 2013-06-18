@@ -1,6 +1,7 @@
 require 'cinch'
 require "curb"
 require 'nokogiri'
+require "uri"
 
 module Cinch::Plugins
   module HTTP
@@ -9,6 +10,8 @@ module Cinch::Plugins
 
       BLACKLIST = [/\.png$/i, /\.jpe?g$/i, /\.bmp$/i, /\.gif$/i, /\.pdf$/i].freeze
 
+      TITLE_ONLY_LIST = %w(twitter.com)
+      
       set :help, <<-HELP
 http[s]://..
 parse html and show title, description
@@ -30,6 +33,11 @@ HELP
         if node = html.at_xpath("html/head/title")
           yield node.text
         end
+
+        uri = URI.parse(url)
+
+        return if TITLE_ONLY_LIST.any?{|entry| uri.host == entry}
+
         if node = html.at_xpath('html/head/meta[@name="description"]')
           yield node[:content].lines.first(3).join
         end
