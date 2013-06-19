@@ -28,7 +28,7 @@ role :web,  host
 role :app,  host
 role :db,   host, :primary => true
 
-set :bot_name, "seijit"
+set :bot_name, "seijit" unless exists? :bot_name
 
 # daemontools
 set :svscan_root, "/service"
