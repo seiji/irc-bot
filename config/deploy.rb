@@ -13,7 +13,7 @@ set :branch, "master"
 set :user, "deploy"
 set :group, user
 set :runner, user
-set :use_sudo,          true
+set :use_sudo,false
 set(:run_method) { use_sudo ? :sudo : :run }
 
 # strategy
@@ -42,7 +42,7 @@ namespace :deploy do
 
   task :setup_config, roles: :app do
     %w(seijit).each do |name|
-      sudo "ln -nfs #{current_path}/service/#{application}-#{name} /service/#{application}-#{name}"
+      sudo "ln -fs #{current_path}/service/#{application}-#{name} /service/#{application}-#{name}"
     end
   end
   after "deploy:setup", "deploy:setup_config"
@@ -53,5 +53,5 @@ set :svscan_root, "/service"
 set :supervise_name, "#{application}"
 
 def svc(cmd)
-  run "svc #{cmd} #{svscan_root}/#{supervise_name}"
+  sudo "svc #{cmd} #{svscan_root}/#{supervise_name}"
 end
