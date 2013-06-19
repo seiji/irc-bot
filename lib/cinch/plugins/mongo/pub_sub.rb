@@ -50,7 +50,7 @@ pubsub
 HELP
       listen_to :random_number
       def listen(m, channel, message)
-        Channel(channel).send message
+        Channel(channel).notice message
       end
 
       private
