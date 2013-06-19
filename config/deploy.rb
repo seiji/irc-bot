@@ -28,12 +28,12 @@ role :web,  host
 role :app,  host
 role :db,   host, :primary => true
 
-set :bot_name, "seijit" if !
+set :bot_name, "seijit"
 
 # daemontools
 set :svscan_root, "/service"
 set :supervise_name, "#{application}-#{bot_name}"
-set :svname, "#{svscan_root}/.#{supervise_name}" 
+set :svname, "#{svscan_root}/#{supervise_name}" 
 set :acct_name, "logadmin"
 set :acct_group, "logadmin"
 
@@ -63,29 +63,36 @@ namespace :deploy do
     sudo "chown #{acct_name}:#{acct_group} #{svname}/log/main"
     sudo "chown #{acct_name}:#{acct_group} #{svname}/log/status"
 
-    run_script = <<-EOS
+    run_script = <<-EOF
 #!/bin/sh
 
 PATH=/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin
 export PATH
 
 exec 2>&1
-sleep 3
+exec setuidgid deploy bash -c '
+  cd /srv/irc-bot/current;
+  source /etc/profile;
+  bundle exec ruby bots/#{bot_name}.rb
+'
 
-EOS
-    sudo "cat #{run_script} >#{svname}/run"
+EOF
+    put run_script, "/tmp/run"
+    sudo "chown root:root /tmp/run"
+    sudo "mv /tmp/run #{svname}/run"
     sudo "chmod +x #{svname}/run"
 
-    run_log_script = <<-EOS
+    run_log_script = <<-EOF
 #!/bin/sh
 exec setuidgid ${acct_name} multilog t s1000000 n100 ./main
 
-EOS
-    sudo "cat #{run_log_script} >#{svname}/log/run"
+EOF
+    put run_log_script, "/tmp/run_log"
+    sudo "chown root:root /tmp/run_log"
+    sudo "mv /tmp/run_log #{svname}/log/run"
     sudo "chmod +x #{svname}/log/run"
-    
-#    sudo "ln -fs #{current_path}/service/#{application}-#{bot_name} /service/#{application}-#{bot_name}"
   end
   after "deploy:setup", "deploy:setup_config"
+
 end
 
