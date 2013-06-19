@@ -84,7 +84,7 @@ EOF
 
     run_log_script = <<-EOF
 #!/bin/sh
-exec setuidgid ${acct_name} multilog t s1000000 n100 ./main
+exec setuidgid #{acct_name} multilog t s1000000 n100 ./main
 
 EOF
     put run_log_script, "/tmp/run_log"
