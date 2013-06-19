@@ -6,8 +6,8 @@ set :application, "irc-bot"
 # scm
 set :repository,  "git@github.com:seiji/irc-bot.git"
 set :scm, :git
-set :git_shallow_clone, true
-set :git_enable_submodules, true
+set :git_shallow_clone, 1
+set :git_enable_submodules, 1
 set :branch, "master"
 
 set :user, "deploy"
