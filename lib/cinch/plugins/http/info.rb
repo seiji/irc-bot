@@ -6,7 +6,7 @@ require "uri"
 module Cinch::Plugins
   module HTTP
     class Info
-    include Cinch::Plugin
+      include Cinch::Plugin
 
       BLACKLIST = [/\.png$/i, /\.jpe?g$/i, /\.bmp$/i, /\.gif$/i, /\.pdf$/i].freeze
 
