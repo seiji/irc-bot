@@ -21,29 +21,30 @@ set :deploy_via, :remote_cache
 set :deploy_to, "/srv/#{application}"
 set :current_path, "#{deploy_to}/current"
 set :shared_path, "#{deploy_to}/shared"
+set :normalize_asset_timestamps, false
 
 set :host, 'data'
 role :web,  host
 role :app,  host
 role :db,   host, :primary => true
 
+set :name, "seijit" if !
+
 namespace :deploy do
   task :start, :roles => :app do
-    svc('-u')
+    svc('-u', name)
   end
 
   task :stop, :roles => :app do
-    svc('-d')
+    svc('-d', name)
   end
 
   task :restart, :roles => :app do
-    svc('-h')
+    svc('-h', name)
   end
 
   task :setup_config, roles: :app do
-    %w(seijit).each do |name|
-      sudo "ln -fs #{current_path}/service/#{application}-#{name} /service/#{application}-#{name}"
-    end
+    sudo "ln -fs #{current_path}/service/#{application}-#{name} /service/#{application}-#{name}"
   end
   after "deploy:setup", "deploy:setup_config"
 end
@@ -52,6 +53,6 @@ end
 set :svscan_root, "/service"
 set :supervise_name, "#{application}"
 
-def svc(cmd)
-  sudo "svc #{cmd} #{svscan_root}/#{supervise_name}"
+def svc(cmd, name)
+  sudo "svc #{cmd} #{svscan_root}/#{supervise_name}-#{name}"
 end
