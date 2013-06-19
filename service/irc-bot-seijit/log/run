@@ -1,0 +1,2 @@
+#!/bin/sh
+exec setuidgid logadmin multilog t s1000000 n100 ./main
