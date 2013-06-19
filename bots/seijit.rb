@@ -22,5 +22,5 @@ bot = Cinch::Bot.new do
   end
 end
 
-Thread.new { Mongo::PubSub::Subscriber.new(bot).start }
+Thread.new { Mongo::PubSub::Subscriber.new(bot, "seijit").start }
 bot.start

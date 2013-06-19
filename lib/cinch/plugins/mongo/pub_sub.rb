@@ -4,19 +4,18 @@ require "time"
 
 module Mongo::PubSub
   class Subscriber
-    def initialize(bot)
+    def initialize(bot, collection_name)
       @bot = bot
       connection = Mongo::Connection.new('127.0.0.1', 27017)
       # TODO: from config
       db = connection.db("pubsub") 
-      @subscribed_collection = db.collection("messages")
-      @earliest = @subscribed_collection.find_one({}, :sort => [[ '$natural', -1 ]])['_id']
+      @subscribed_collection = db.collection(collection_name)
     end
 
     def start
       tail = Mongo::Cursor.new(@subscribed_collection,
                                selector: {
-                                 'time' => {'$gt' => (Time.now.to_f * 1000.0).to_i}
+                                 '_id' => {'$gt' => (Time.now.to_f * 1000.0).to_i}
                                },
                                timeout: false,
                                tailable: true,
@@ -29,7 +28,7 @@ module Mongo::PubSub
         if doc != nil 
           begin
             @bot.channels.each do | channel |
-              @bot.handlers.dispatch(:random_number, nil, channel, doc['message'])
+              @bot.handlers.dispatch(:notice_message, nil, channel, doc['message'])
             end
           rescue EndSubscriptionException
             break
@@ -47,7 +46,7 @@ module Cinch::Plugins
       set :help, <<-HELP
 pubsub
 HELP
-      listen_to :random_number
+      listen_to :notice_message
       def listen(m, channel, message)
         channel.notice message
       end

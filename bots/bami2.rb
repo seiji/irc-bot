@@ -4,8 +4,8 @@ require 'bundler'
 Bundler.require(:default)
 $:.unshift 'lib'
 
-require 'cinch/plugins/github/status'
 require 'cinch/plugins/http/info'
+require 'cinch/plugins/mongo/pub_sub'
 
 bot = Cinch::Bot.new do
   configure do |c|
@@ -13,9 +13,11 @@ bot = Cinch::Bot.new do
     c.nick = "_binch"
     c.channels = ["#bami2"]
     c.plugins.plugins = [
-                         Cinch::Plugins::HTTP::Info
+                         Cinch::Plugins::HTTP::Info,
+                         Cinch::Plugins::Mongo::PubSub
                         ]
   end
 end
 
+Thread.new { Mongo::PubSub::Subscriber.new(bot, "bami2").start }
 bot.start
