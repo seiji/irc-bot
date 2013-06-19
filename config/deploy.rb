@@ -28,23 +28,23 @@ role :web,  host
 role :app,  host
 role :db,   host, :primary => true
 
-set :name, "seijit" if !
+set :bot_name, "seijit" if !
 
 namespace :deploy do
   task :start, :roles => :app do
-    svc('-u', name)
+    svc('-u', bot_name)
   end
 
   task :stop, :roles => :app do
-    svc('-d', name)
+    svc('-d', bot_name)
   end
 
   task :restart, :roles => :app do
-    svc('-h', name)
+    svc('-h', bot_name)
   end
 
   task :setup_config, roles: :app do
-    sudo "ln -fs #{current_path}/service/#{application}-#{name} /service/#{application}-#{name}"
+    sudo "ln -fs #{current_path}/service/#{application}-#{bot_name} /service/#{application}-#{bot_name}"
   end
   after "deploy:setup", "deploy:setup_config"
 end
