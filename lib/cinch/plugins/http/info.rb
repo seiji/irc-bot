@@ -16,7 +16,7 @@ module Cinch::Plugins
 http[s]://..
 parse html and show title, description
 HELP
-       match %r{(https?://.*?)(?:\s|$|,|\.\s|\.$)}, :use_prefix => false
+      match %r{(https?://.*?)(?:\s|$|,|#|\.\s|\.$)}, :use_prefix => false
 
       def execute(m, url)
         return if BLACKLIST.any?{|entry| url =~ entry}
