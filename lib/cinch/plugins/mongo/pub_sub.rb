@@ -22,6 +22,7 @@ module Mongo::PubSub
                                tailable: true,
                                order: [['$natural', 1]])
 
+      tail.add_option(Mongo::Constants::OP_QUERY_AWAIT_DATA)
       while true
         sleep 5 
         doc = tail.next_document 
@@ -33,8 +34,6 @@ module Mongo::PubSub
           rescue EndSubscriptionException
             break
           end
-        else
-          sleep(1)
         end
       end
     end
@@ -50,7 +49,7 @@ pubsub
 HELP
       listen_to :random_number
       def listen(m, channel, message)
-        Channel(channel).notice message
+        channel.notice message
       end
 
       private
