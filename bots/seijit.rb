@@ -8,6 +8,7 @@ require "mongo"
 require 'cinch/plugins/github/status'
 require 'cinch/plugins/http/info'
 require 'cinch/plugins/mongo/pub_sub'
+require 'cinch/plugins/urbandictionary'
 
 bot = Cinch::Bot.new do
   configure do |c|
@@ -17,7 +18,8 @@ bot = Cinch::Bot.new do
     c.plugins.plugins = [
                          Cinch::Plugins::Github::Status,
                          Cinch::Plugins::HTTP::Info,
-                         Cinch::Plugins::Mongo::PubSub
+                         Cinch::Plugins::Mongo::PubSub,
+                         Cinch::Plugins::Urbandictionary
                         ]
   end
 end
