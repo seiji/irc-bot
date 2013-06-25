@@ -48,10 +48,16 @@ pubsub
 HELP
       listen_to :notice_message
       def listen(m, channel, message)
-        channel.notice message
+        lines = message.rstrip.split(/\r?\n/).map {|line| line.chomp }
+        lines.each_with_index do |line, i|
+          case i
+          when 0
+            channel.notice Cinch::Formatting::format(:underline, line)
+          else
+            channel.notice Cinch::Formatting::format(:bold, :orange, line)
+          end
+        end
       end
-
-      private
     end
   end
 end
