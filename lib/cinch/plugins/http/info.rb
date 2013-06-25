@@ -22,7 +22,7 @@ HELP
         return if BLACKLIST.any?{|entry| url =~ entry}
         debug "match #{url}"
         get_info(url) do |msg|
-          m.channel.notice Cinch::Formatting::format(:bold, :orange, msg)
+          m.channel.notice msg
         end
       end
 
