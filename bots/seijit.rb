@@ -9,6 +9,7 @@ require 'cinch/plugins/github/status'
 require 'cinch/plugins/http/info'
 require 'cinch/plugins/mongo/pub_sub'
 require 'cinch/plugins/urbandictionary'
+require "cinch/plugins/openweathermap"
 
 bot = Cinch::Bot.new do
   configure do |c|
@@ -19,6 +20,7 @@ bot = Cinch::Bot.new do
                          Cinch::Plugins::Github::Status,
                          Cinch::Plugins::HTTP::Info,
                          Cinch::Plugins::Mongo::PubSub,
+                         Cinch::Plugins::Openweathermap,
                          Cinch::Plugins::Urbandictionary
                         ]
   end

@@ -6,7 +6,7 @@ $:.unshift 'lib'
 
 require 'cinch/plugins/http/info'
 require 'cinch/plugins/mongo/pub_sub'
-require 'cinch/plugins/urbandictionary'
+require 'cinch/plugins/openweathermap'
 
 bot = Cinch::Bot.new do
   configure do |c|
@@ -16,7 +16,7 @@ bot = Cinch::Bot.new do
     c.plugins.plugins = [
                          Cinch::Plugins::HTTP::Info,
                          Cinch::Plugins::Mongo::PubSub,
-                         Cinch::Plugins::Urbandictionary
+                         Cinch::Plugins::Openweathermap
                         ]
   end
 end
