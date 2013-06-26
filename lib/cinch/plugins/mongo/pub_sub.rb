@@ -28,7 +28,7 @@ module Mongo::PubSub
         if doc != nil 
           begin
             @bot.channels.each do | channel |
-              @bot.handlers.dispatch(:notice_message, nil, channel, doc['message'])
+              @bot.handlers.dispatch(:notice_message, nil, channel, doc['message'], doc['formats'] || {})
             end
           rescue EndSubscriptionException
             break
@@ -47,16 +47,14 @@ module Cinch::Plugins
 pubsub
 HELP
       listen_to :notice_message
-      def listen(m, channel, message)
+      def listen(m, channel, message, formats = {})
         lines = message.rstrip.split(/\r?\n/).map {|line| line.chomp }
         lines.each_with_index do |line, i|
-          case i
-          when 0
-            channel.notice Cinch::Formatting::format(:underline, line)
-          else
-            channel.notice Cinch::Formatting::format(:bold, :orange, line)
-          end
+          format = formats[i.to_s] || []
+          format = format.map{|f| f.to_sym }
+          channel.notice Cinch::Formatting::format(*format, line)
         end
+       # channel.notice Cinch::Formatting::format(:bold, :orange, line)
       end
     end
   end
