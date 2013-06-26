@@ -41,7 +41,8 @@ module Cinch::Plugins
           json['list'].each_with_index do |f, i|
             break if i > 9
             weather = f["weather"][0]
-            yield " - [#{Time.at(f['dt'])}] #{weather['main']}/#{weather['description']}"
+            main = f['main']
+            yield " - [#{Time.at(f['dt']).strftime("%Y/%m/%d %H:%M:%S")}] #{weather['main']}/#{weather['description']} #{main['temp_max']}C/#{main['temp_min']}"
           end
         else
           yield json["message"]
