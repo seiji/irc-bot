@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'cinch'
 require "curb"
 require 'json'
@@ -42,7 +43,13 @@ module Cinch::Plugins
             break if i > 9
             weather = f["weather"][0]
             main = f['main']
-            yield " - [#{Time.at(f['dt']).strftime("%Y/%m/%d %H:%M:%S")}] #{weather['main']}/#{weather['description']} #{to_celsius(main['temp_max'])}/#{to_celsius(main['temp_min'])}"
+            yield " - [%s] %-6s - %-20s %-5s / %-5s" % [
+                               Time.at(f['dt']).strftime("%Y/%m/%d %H:%M"),
+                               weather['main'],
+                               weather['description'],
+                               to_celsius(main['temp_max']),
+                               to_celsius(main['temp_min'])
+                              ]
           end
         else
           yield json["message"]
@@ -53,7 +60,7 @@ module Cinch::Plugins
     end
 
     def to_celsius(kelvin)
-      sprintf("%.2f C", kelvin - 273.15)
+      sprintf("%.2fC", kelvin - 273.15)
     end
   end
 end
