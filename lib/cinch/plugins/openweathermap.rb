@@ -42,7 +42,7 @@ module Cinch::Plugins
             break if i > 9
             weather = f["weather"][0]
             main = f['main']
-            yield " - [#{Time.at(f['dt']).strftime("%Y/%m/%d %H:%M:%S")}] #{weather['main']}/#{weather['description']} #{main['temp_max']}C/#{main['temp_min']}"
+            yield " - [#{Time.at(f['dt']).strftime("%Y/%m/%d %H:%M:%S")}] #{weather['main']}/#{weather['description']} #{to_celsius(main['temp_max'])}/#{to_celsius(main['temp_min'])}"
           end
         else
           yield json["message"]
