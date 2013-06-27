@@ -2,6 +2,7 @@ require 'cinch'
 require "curb"
 require 'nokogiri'
 require "uri"
+require "mechanize"
 
 module Cinch::Plugins
   module HTTP
@@ -17,7 +18,7 @@ http[s]://..
 parse html and show title, description
 HELP
       match %r{(https?://.*?)(?:\s|$|,|#|\.\s|\.$)}, :use_prefix => false
-
+      
       def execute(m, url)
         return if BLACKLIST.any?{|entry| url =~ entry}
         debug "match #{url}"
@@ -28,8 +29,13 @@ HELP
 
       private
       def get_info(url)
-        http = Curl.get(url)
-        html = Nokogiri::HTML(http.body_str)
+        c = Curl::Easy.new(url) do |curl|
+          curl.headers["User-Agent"] = Mechanize::AGENT_ALIASES['Mac Safari']
+          curl.verbose = false
+        end
+        c.perform
+        html = Nokogiri::HTML(c.body_str.to_s)
+        
         if node = html.at_xpath("html/head/title")
           yield node.text
         end

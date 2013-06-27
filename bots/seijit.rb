@@ -14,7 +14,7 @@ require "cinch/plugins/openweathermap"
 bot = Cinch::Bot.new do
   configure do |c|
     c.server = "chat.freenode.net"
-    c.nick = "_binch"
+    c.nick = "_bbb"
     c.channels = ["#seijit"]
     c.plugins.plugins = [
                          Cinch::Plugins::Github::Status,
