@@ -32,6 +32,7 @@ HELP
         c = Curl::Easy.new(url) do |curl|
           curl.headers["User-Agent"] = Mechanize::AGENT_ALIASES['Mac Safari']
           curl.verbose = false
+          curl.follow_location = true
         end
         c.perform
         html = Nokogiri::HTML(c.body_str.to_s)
