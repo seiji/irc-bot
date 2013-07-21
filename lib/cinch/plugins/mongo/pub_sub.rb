@@ -49,12 +49,14 @@ HELP
       listen_to :notice_message
       def listen(m, channel, message, formats = {})
         lines = message.rstrip.split(/\r?\n/).map {|line| line.chomp }
+        messages = []
         lines.each_with_index do |line, i|
           format = formats[i.to_s] || []
           format = format.map{|f| f.to_sym }
-          channel.notice Cinch::Formatting::format(*format, line)
+          messages << Cinch::Formatting::format(*format, line)
         end
-       # channel.notice Cinch::Formatting::format(:bold, :orange, line)
+        channel.notice messages.join("\n")
+        # channel.notice Cinch::Formatting::format(:bold, :orange, line)
       end
     end
   end
