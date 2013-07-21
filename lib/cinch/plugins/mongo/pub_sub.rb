@@ -55,7 +55,7 @@ HELP
           format = format.map{|f| f.to_sym }
           messages << Cinch::Formatting::format(*format, line)
         end
-        channel.notice messages.join("\n")
+        channel.notice messages.join(" ")
         # channel.notice Cinch::Formatting::format(:bold, :orange, line)
       end
     end
