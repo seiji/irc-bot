@@ -23,7 +23,7 @@ set :current_path, "#{deploy_to}/current"
 set :shared_path, "#{deploy_to}/shared"
 set :normalize_asset_timestamps, false
 
-set :host, 'data'
+set :host, 'linode2'
 role :web,  host
 role :app,  host
 role :db,   host, :primary => true
