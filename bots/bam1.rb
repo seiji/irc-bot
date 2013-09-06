@@ -14,11 +14,8 @@ bot = Cinch::Bot.new do
     c.nick = "_binch"
     c.channels = ["#bam1"]
     c.plugins.plugins = [
-                         Cinch::Plugins::HTTP::Info,
-                         Cinch::Plugins::Mongo::PubSub
+                         Cinch::Plugins::HTTP::Info
                         ]
   end
 end
-
-Thread.new { Mongo::PubSub::Subscriber.new(bot, "bami1").start }
 bot.start
