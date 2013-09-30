@@ -6,9 +6,13 @@ module Mongo::PubSub
   class Subscriber
     def initialize(bot, collection_name)
       @bot = bot
-      connection = Mongo::Connection.new('127.0.0.1', 27017)
+      client = MongoReplicaSetClient.new(
+                                       ['irc.seiji.me:27017', 'bin.seiji.me:27017'],
+                                       :read => :secondary
+                                       )
+
       # TODO: from config
-      db = connection.db("pubsub") 
+      db = client.db("pubsub") 
       @subscribed_collection = db.collection(collection_name)
     end
 
