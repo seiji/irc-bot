@@ -45,6 +45,7 @@ GEM
     nokogiri (1.6.0)
       mini_portile (~> 0.5.0)
     ntlm-http (0.1.1)
+    rake (0.9.6)
     unf (0.1.1)
       unf_ext
     unf_ext (0.0.6)
@@ -63,3 +64,4 @@ DEPENDENCIES
   mechanize
   mongo
   nokogiri
+  rake

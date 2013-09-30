@@ -1,6 +1,7 @@
 # A sample Gemfile
 source "https://rubygems.org"
 
+gem "rake"
 gem "cinch"
 gem "curb"
 gem "nokogiri"
