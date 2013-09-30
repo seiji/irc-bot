@@ -1,15 +1,16 @@
 require 'cinch'
 require "mongo"
 require "time"
+include Mongo
 
 module Mongo::PubSub
   class Subscriber
     def initialize(bot, collection_name)
       @bot = bot
       client = MongoReplicaSetClient.new(
-                                       ['irc.seiji.me:27017', 'bin.seiji.me:27017'],
-                                       :read => :secondary
-                                       )
+                                         ['irc.seiji.me:27017', 'bin.seiji.me:27017'],
+                                         :read => :secondary
+                                         )
 
       # TODO: from config
       db = client.db("pubsub") 
