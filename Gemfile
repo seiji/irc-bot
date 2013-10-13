@@ -8,6 +8,7 @@ gem "nokogiri"
 gem "mongo"
 gem "bson_ext"
 gem "mechanize"
+gem "charlock_holmes"
 
 group :development do
   gem 'capistrano'

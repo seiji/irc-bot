@@ -3,6 +3,7 @@ require "curb"
 require 'nokogiri'
 require "uri"
 require "mechanize"
+require "charlock_holmes"
 
 module Cinch::Plugins
   module HTTP
@@ -35,8 +36,10 @@ HELP
           curl.follow_location = true
         end
         c.perform
-        html = Nokogiri::HTML(c.body_str.to_s)
-        
+        str = c.body_str.to_s
+        encode = CharlockHolmes::EncodingDetector.detect(str)[:encoding]
+        html = Nokogiri::HTML(str.encode("UTF-8", encode, :invalid => :replace))
+
         if node = html.at_xpath("html/head/title")
           yield node.text
         end

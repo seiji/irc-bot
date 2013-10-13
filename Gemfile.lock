@@ -13,6 +13,7 @@ GEM
     capistrano-ext (1.2.1)
       capistrano (>= 1.0.0)
     capistrano_colors (0.5.5)
+    charlock_holmes (0.6.9.4)
     cinch (2.0.4)
     curb (0.8.4)
     domain_name (0.5.12)
@@ -59,6 +60,7 @@ DEPENDENCIES
   capistrano
   capistrano-ext
   capistrano_colors
+  charlock_holmes
   cinch
   curb
   mechanize
