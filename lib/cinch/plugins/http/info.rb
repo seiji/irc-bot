@@ -38,7 +38,7 @@ HELP
         c.perform
         str = c.body_str.to_s
         encode = CharlockHolmes::EncodingDetector.detect(str)[:encoding]
-        html = Nokogiri::HTML(str.encode("UTF-8", encode, :invalid => :replace))
+        html = Nokogiri::HTML(str.encode("UTF-8", encode, :invalid => :replace, :undef=>:replace))
 
         if node = html.at_xpath("html/head/title")
           yield node.text
