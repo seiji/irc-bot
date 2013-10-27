@@ -24,7 +24,8 @@ HELP
         return if BLACKLIST.any?{|entry| url =~ entry}
         debug "match #{url}"
         get_info(url) do |msg|
-          m.channel.notice msg
+          p msg
+          # m.channel.notice msg
         end
       end
 
@@ -38,10 +39,17 @@ HELP
         c.perform
         str = c.body_str.to_s
         encode = CharlockHolmes::EncodingDetector.detect(str)[:encoding]
-        html = Nokogiri::HTML(str.encode("UTF-8", encode, :invalid => :replace, :undef=>:replace))
+        # str = str.encode("UTF-8", encode, :invalid => :replace, :undef=>:replace)
+        html = Nokogiri::HTML(str)
 
+        encode = 'UTF-8'
         if node = html.at_xpath("html/head/title")
-          yield node.text
+          title = node.text
+          encode = CharlockHolmes::EncodingDetector.detect(title)[:encoding]
+          title = encode == 'UTF-8' ?  title : title.encode("UTF-8", encode, :invalid => :replace, :undef=>:replace)
+          yield title
+        else
+          return
         end
 
         uri = URI.parse(url)
@@ -49,7 +57,9 @@ HELP
         return if TITLE_ONLY_LIST.any?{|entry| uri.host == entry}
 
         if node = html.at_xpath('html/head/meta[@name="description"]')
-          yield node[:content].lines.first(3).join
+          description = node[:content].lines.first(3).join
+          description = encode == 'UTF-8' ?  description : description.encode("UTF-8", encode, :invalid => :replace, :undef=>:replace)
+          yield description
         end
       rescue => e
         error "#{e.class.name}: #{e.message}"

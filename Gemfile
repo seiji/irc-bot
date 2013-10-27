@@ -15,3 +15,8 @@ group :development do
   gem 'capistrano-ext'
   gem 'capistrano_colors'
 end
+
+group :test do
+  gem 'rspec'
+  gem 'cinch-test'
+end
