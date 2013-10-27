@@ -24,8 +24,7 @@ HELP
         return if BLACKLIST.any?{|entry| url =~ entry}
         debug "match #{url}"
         get_info(url) do |msg|
-          p msg
-          # m.channel.notice msg
+          m.channel.notice msg
         end
       end
 
