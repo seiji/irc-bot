@@ -24,7 +24,7 @@ HELP
         return if BLACKLIST.any?{|entry| url =~ entry}
         debug "match #{url}"
         get_info(url) do |msg|
-          m.channel.notice msg
+          m.channel.notice msg + "\n"
         end
       end
 
@@ -57,7 +57,6 @@ HELP
 
         if node = html.at_xpath('html/head/meta[@name="description"]')
           description = node[:content]
-          encode = CharlockHolmes::EncodingDetector.detect(description)[:encoding]
           # description = node[:content].lines.first(3).join
           description = encode == 'UTF-8' ?  description : description.encode("UTF-8", encode, :invalid => :replace, :undef=>:replace)
           yield description
