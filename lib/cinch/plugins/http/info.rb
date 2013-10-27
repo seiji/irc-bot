@@ -24,7 +24,7 @@ HELP
         return if BLACKLIST.any?{|entry| url =~ entry}
         debug "match #{url}"
         get_info(url) do |msg|
-          m.channel.notice msg + "\n"
+          m.channel.notice msg
         end
       end
 
@@ -59,7 +59,7 @@ HELP
           description = node[:content]
           # description = node[:content].lines.first(3).join
           description = encode == 'UTF-8' ?  description : description.encode("UTF-8", encode, :invalid => :replace, :undef=>:replace)
-          yield description
+          yield description[0,140]
         end
       rescue => e
         error "#{e.class.name}: #{e.message}"
